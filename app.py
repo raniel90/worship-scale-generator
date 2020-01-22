@@ -3,12 +3,16 @@ import datetime
 import pandas as pd
 
 musicians = {
-  'baterista': ['Deco', 'Raniel', 'Roosevelt', 'Mago', 'Ary', 'Gustavo'],
-  'baixista': ['Nona', 'Douglas', 'Edson', 'Eraldo', 'Jonathas'], 
-  'guitarrista': ['Eraldo', 'Fernando', 'Afonso'],
-  'violonista': ['Zeik', 'Joel', 'Flávio', 'Fagner', 'Paty'],
-  'tecladista': ['Flávio', 'Giba', 'Fábio'],
-  'percussionista': ['Natal']
+  'Baterista': ['Deco', 'Raniel', 'Roosevelt', 'Mago', 'Ary', 'Gustavo'],
+  'Baixista': ['Nona', 'Douglas', 'Edson', 'Eraldo', 'Jonatas'], 
+  'Guitarrista': ['Eraldo', 'Fernando', 'Afonso'],
+  'Violonista': ['Zeik', 'Joel', 'Flávio', 'Fagner', 'Paty'],
+  'Tecladista': ['Flávio', 'Giba', 'Fábio'],
+  'Percussionista': ['Natal'],
+  'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
+  'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle'],
+  'Vocal Ministro': ['Dani', 'Betânia', 'Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
+  'Vocal Homem': ['Flávio', 'Jonatas', 'Vinícius', 'Zeik', 'Kaio', 'Joel'],
 }
 
 indexes = {}
@@ -62,7 +66,7 @@ def remove_duplicates(df, item):
         musician = item[instrument]
 
         if musician not in duplicated_musicians:
-          duplicated_musicians[musician] = []  
+          duplicated_musicians[musician] = []
 
         duplicated_musicians[musician].append(instrument)
 
@@ -109,4 +113,5 @@ def get_gigs():
     
 
 df = get_gigs()
+print(df)
 df.to_excel("Escala de músicos.xlsx")
