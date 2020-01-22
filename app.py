@@ -12,7 +12,7 @@ musicians = {
   'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
   'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle'],
   'Vocal Ministro': ['Dani', 'Betânia', 'Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
-  'Vocal Homem': ['Flávio', 'Jonatas', 'Vinícius', 'Zeik', 'Kaio', 'Joel'],
+  'Vocal Homem': ['Flávio', 'Vinícius', 'Zeik', 'Kaio', 'Joel'],
 }
 
 indexes = {}
@@ -45,7 +45,6 @@ def shuffle_musicians():
     if indexes[key] == len(musicians[key]) -1:
       random.shuffle(musicians[key])
 
-
 def remove_duplicates(df, item):
   global indexes
   df_last = None
@@ -55,10 +54,12 @@ def remove_duplicates(df, item):
   if (last_idx != -1):
     df_last = df.loc[last_idx]
 
-    for musician_type in musicians:
-      if df_last[musician_type] == item[musician_type]:
-        indexes[musician_type] = get_next_index(musicians[musician_type], indexes[musician_type])
-        item[musician_type] = musicians[musician_type][indexes[musician_type]]
+    for df_attr in df_last:
+      for attr in item:
+
+        if df_attr == item[attr]:
+          indexes[attr] = get_next_index(musicians[attr], indexes[attr])
+          item[attr] = musicians[attr][indexes[attr]]
 
 
     for instrument in item:
@@ -74,8 +75,8 @@ def remove_duplicates(df, item):
     for musician in duplicated_musicians:
       if len(duplicated_musicians[musician]) > 1:
         instrument_duplicated = duplicated_musicians[musician][0]
-        indexes[musician_type] = get_next_index(musicians[musician_type], indexes[musician_type])
-        item[musician_type] = musicians[musician_type][indexes[musician_type]]
+        indexes[instrument_duplicated] = get_next_index(musicians[instrument_duplicated], indexes[instrument_duplicated])
+        item[instrument_duplicated] = musicians[instrument_duplicated][indexes[instrument_duplicated]]
 
 
   return item
