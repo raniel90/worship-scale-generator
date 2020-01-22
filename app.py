@@ -109,5 +109,4 @@ def get_gigs():
     
 
 df = get_gigs()
-print(df)
 df.to_excel("Escala de músicos.xlsx")
