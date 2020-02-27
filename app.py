@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 
 musicians = {
-  'Baterista': ['Deco', 'Raniel', 'Roosevelt', 'Mago', 'Ary', 'Gustavo'],
+  'Baterista': ['Deco', 'Raniel', 'Roosevelt', 'Ary'],
   'Baixista': ['Nona', 'Douglas', 'Edson', 'Eraldo', 'Jonatas'], 
   'Guitarrista': ['Eraldo', 'Fernando', 'Afonso'],
   'Violonista': ['Zeik', 'Joel', 'Flávio', 'Fagner', 'Paty'],
@@ -13,6 +13,19 @@ musicians = {
   'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle'],
   'Vocal Ministro': ['Dani', 'Betânia', 'Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
   'Vocal Homem': ['Flávio', 'Vinícius', 'Zeik', 'Kaio', 'Joel'],
+}
+
+youth_musicians = {
+  'Baterista': ['Juventude'],
+  'Baixista': ['Juventude'], 
+  'Guitarrista': ['Juventude'], 
+  'Violonista': ['Juventude'],
+  'Tecladista': ['Juventude'],
+  'Percussionista': ['Juventude'],
+  'Vocal Soprano': ['Juventude'],
+  'Vocal Contralto': ['Juventude'],
+  'Vocal Ministro': ['Juventude'],
+  'Vocal Homem': ['Juventude']
 }
 
 indexes = {}
@@ -30,8 +43,6 @@ def get_first_sunday():
 
 
 def get_next_index(items, indexes):
-  new_items = items
-
   if len(items) == indexes + 1:
       indexes = 0
   else:
@@ -39,6 +50,30 @@ def get_next_index(items, indexes):
   
   return indexes
 
+def get_sundays_fifth_week():
+  dates = {}
+  dates_five_weeks = {}
+  today = datetime.date.today()
+  d = datetime.datetime.strptime(f"{today.year}-01-01", '%Y-%m-%d')
+
+  while d.year == today.year:
+    if d.weekday() == 6:
+      
+      if d.month not in dates:
+        dates[d.month] = []
+      
+      dates[d.month].append(f"{d.day}/{d.month}/{d.year}")
+
+    d += datetime.timedelta(1)
+    
+  for date in dates:
+    if len(dates[date]) == 5:
+      last_index = len(dates[date]) -1
+      sunday_five_week = dates[date][last_index]
+
+      dates_five_weeks[sunday_five_week] = True
+  
+  return dates_five_weeks
 
 def shuffle_musicians():
   for key in indexes:
@@ -113,5 +148,6 @@ def get_gigs():
   return df
     
 
-df = get_gigs()
-df.to_excel("Escala de músicos.xlsx")
+# df = get_gigs()
+# df.to_excel("Escala de músicos.xlsx")
+# df.to_csv("Escala de músicos.csv")
