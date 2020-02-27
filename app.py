@@ -85,6 +85,7 @@ def remove_duplicates(df, item):
   df_last = None
   duplicated_musicians = {}
   last_idx = len(df.index) -1
+  
 
   if (last_idx != -1):
     df_last = df.loc[last_idx]
