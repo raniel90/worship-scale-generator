@@ -10,28 +10,33 @@ musicians = {
   'Tecladista': ['Flávio', 'Giba', 'Fábio'],
   'Percussionista': ['Natal'],
   'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
-  'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle'],
-  'Vocal Ministro': ['Dani', 'Betânia', 'Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
-  'Vocal Homem': ['Flávio', 'Vinícius', 'Zeik', 'Kaio', 'Joel'],
-}
-
-youth_musicians = {
-  'Baterista': ['Juventude'],
-  'Baixista': ['Juventude'], 
-  'Guitarrista': ['Juventude'], 
-  'Violonista': ['Juventude'],
-  'Tecladista': ['Juventude'],
-  'Percussionista': ['Juventude'],
-  'Vocal Soprano': ['Juventude'],
-  'Vocal Contralto': ['Juventude'],
-  'Vocal Ministro': ['Juventude'],
-  'Vocal Homem': ['Juventude']
+  'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle', 'Dani'],
+  'Líder': ['Flávio', 'Vinícius', 'Jonatas', 'Zeik'],
+  'Vocal Homem': ['Kaio']
 }
 
 indexes = {}
 
 for musician_type in musicians:
   indexes[musician_type] = 0
+
+def get_youth_musicians(date):
+  data = {
+    'Baterista': 'Juventude',
+    'Baixista': 'Juventude', 
+    'Guitarrista': 'Juventude', 
+    'Violonista': 'Juventude',
+    'Tecladista': 'Juventude',
+    'Percussionista': 'Juventude',
+    'Vocal Soprano': 'Juventude',
+    'Vocal Contralto': 'Juventude',
+    'Vocal Homem': 'Juventude',
+    'Líder': 'Juventude'
+    }
+
+  data['Data'] = date
+  
+  return data
 
 def get_first_sunday():
   d = datetime.date.today()
@@ -85,7 +90,6 @@ def remove_duplicates(df, item):
   df_last = None
   duplicated_musicians = {}
   last_idx = len(df.index) -1
-  
 
   if (last_idx != -1):
     df_last = df.loc[last_idx]
@@ -93,7 +97,7 @@ def remove_duplicates(df, item):
     for df_attr in df_last:
       for attr in item:
 
-        if df_attr == item[attr]:
+        while df_attr == item[attr] and len(musicians[attr]) > 1:
           indexes[attr] = get_next_index(musicians[attr], indexes[attr])
           item[attr] = musicians[attr][indexes[attr]]
 
@@ -111,18 +115,20 @@ def remove_duplicates(df, item):
     for musician in duplicated_musicians:
       if len(duplicated_musicians[musician]) > 1:
         instrument_duplicated = duplicated_musicians[musician][0]
-        indexes[instrument_duplicated] = get_next_index(musicians[instrument_duplicated], indexes[instrument_duplicated])
-        item[instrument_duplicated] = musicians[instrument_duplicated][indexes[instrument_duplicated]]
+        old_index = indexes[instrument_duplicated]
 
+        while old_index == indexes[instrument_duplicated]:
+          indexes[instrument_duplicated] = get_next_index(musicians[instrument_duplicated], indexes[instrument_duplicated])
+          item[instrument_duplicated] = musicians[instrument_duplicated][indexes[instrument_duplicated]]
 
   return item
 
 
 def get_gigs():
-  gigs = {}
   global indexes
   date = get_first_sunday()
   reference_year = date.year
+  sunday_five_week = get_sundays_fifth_week()
 
   df = pd.DataFrame({})
 
@@ -137,6 +143,10 @@ def get_gigs():
       item[musician_type] = musicians[musician_type][indexes[musician_type]]
 
     item = remove_duplicates(df, item)
+
+    if item['Data'] in sunday_five_week:
+      item = get_youth_musicians(item['Data'])
+
     df = df.append(item, ignore_index=True)
 
     shuffle_musicians()
@@ -149,6 +159,5 @@ def get_gigs():
   return df
     
 
-# df = get_gigs()
-# df.to_excel("Escala de músicos.xlsx")
-# df.to_csv("Escala de músicos.csv")
+df = get_gigs()
+df.to_csv("Escala de músicos.csv")
