@@ -3,16 +3,16 @@ import datetime
 import pandas as pd
 
 musicians = {
-  'Baterista': ['Deco', 'Raniel', 'Roosevelt', 'Ary'],
-  'Baixista': ['Nona', 'Douglas', 'Edson', 'Eraldo', 'Jonatas'], 
-  'Guitarrista': ['Eraldo', 'Fernando', 'Afonso'],
-  'Violonista': ['Zeik', 'Joel', 'Flávio', 'Fagner', 'Paty'],
+  'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary'],
+  'Baixista': ['Nona', 'Douglas', 'Edson', 'Jonatas'], 
+  'Guitarrista': ['Fernando', 'Eraldo', 'Afonso'],
+  'Violonista': ['Joel', 'Zeik', 'Belle', 'Fagner'],
   'Tecladista': ['Flávio', 'Giba', 'Fábio'],
   'Percussionista': ['Natal'],
   'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
   'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle', 'Dani'],
-  'Líder': ['Flávio', 'Vinícius', 'Jonatas', 'Zeik'],
-  'Vocal Homem': ['Kaio']
+  'Líder': ['Jonatas','Vinícius', 'Zeik', 'Flávio'],
+  'Vocal Homem': ['Vinícius', 'Kaio', 'Zeik']
 }
 
 indexes = {}
@@ -101,7 +101,6 @@ def remove_duplicates(df, item):
           indexes[attr] = get_next_index(musicians[attr], indexes[attr])
           item[attr] = musicians[attr][indexes[attr]]
 
-
     for instrument in item:
       if instrument != 'Data':
         musician = item[instrument]
@@ -120,6 +119,19 @@ def remove_duplicates(df, item):
         while old_index == indexes[instrument_duplicated]:
           indexes[instrument_duplicated] = get_next_index(musicians[instrument_duplicated], indexes[instrument_duplicated])
           item[instrument_duplicated] = musicians[instrument_duplicated][indexes[instrument_duplicated]]
+    
+    #Zeik Rules
+    if item['Líder'] == 'Zeik':
+      item['Violonista'] = 'Zeik'
+    
+    #Zeik Rules
+    if item['Líder'] == 'Flávio':
+      item['Tecladista'] = 'Flávio'
+    
+    #Zeik Rules
+    while item['Líder'] == 'Jonatas' and item['Baixista'] == 'Jonatas':
+      indexes['Baixista'] = get_next_index(musicians['Baixista'], indexes['Baixista'])
+      item['Baixista'] = musicians['Baixista'][indexes['Baixista']]
 
   return item
 
