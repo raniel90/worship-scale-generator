@@ -124,11 +124,11 @@ def remove_duplicates(df, item):
     if item['Líder'] == 'Zeik':
       item['Violonista'] = 'Zeik'
     
-    #Zeik Rules
+    #Flávio Rules
     if item['Líder'] == 'Flávio':
       item['Tecladista'] = 'Flávio'
     
-    #Zeik Rules
+    #Jonatas Rules
     while item['Líder'] == 'Jonatas' and item['Baixista'] == 'Jonatas':
       indexes['Baixista'] = get_next_index(musicians['Baixista'], indexes['Baixista'])
       item['Baixista'] = musicians['Baixista'][indexes['Baixista']]
