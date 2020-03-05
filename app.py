@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 
 musicians = {
-  'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary'],
+  'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary', 'Gustavo'],
   'Baixista': ['Nona', 'Douglas', 'Edson', 'Jonatas'], 
   'Guitarrista': ['Fernando', 'Eraldo', 'Afonso'],
   'Violonista': ['Joel', 'Zeik', 'Belle', 'Fagner'],
