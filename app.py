@@ -4,14 +4,14 @@ import pandas as pd
 
 musicians = {
   'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary', 'Gustavo'],
-  'Baixista': ['Nona', 'Douglas', 'Edson', 'Jonatas'], 
+  'Baixista': ['Douglas', 'Nona', 'Edson', 'Jonatas'], 
   'Guitarrista': ['Fernando', 'Eraldo', 'Afonso'],
   'Violonista': ['Joel', 'Zeik', 'Belle', 'Fagner'],
   'Tecladista': ['Flávio', 'Giba', 'Fábio'],
   'Percussionista': ['Natal'],
   'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
   'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle', 'Dani'],
-  'Líder': ['Jonatas','Vinícius', 'Zeik', 'Flávio'],
+  'Líder': ['Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
   'Vocal Homem': ['Vinícius', 'Kaio', 'Zeik']
 }
 
@@ -80,15 +80,9 @@ def get_sundays_fifth_week():
   
   return dates_five_weeks
 
-def shuffle_musicians():
-  for key in indexes:
-    if indexes[key] == len(musicians[key]) -1:
-      random.shuffle(musicians[key])
-
 def remove_duplicates(df, item):
   global indexes
   df_last = None
-  duplicated_musicians = {}
   last_idx = len(df.index) -1
 
   if (last_idx != -1):
@@ -100,39 +94,40 @@ def remove_duplicates(df, item):
         while df_attr == item[attr] and len(musicians[attr]) > 1:
           indexes[attr] = get_next_index(musicians[attr], indexes[attr])
           item[attr] = musicians[attr][indexes[attr]]
-
-    for instrument in item:
-      if instrument != 'Data':
-        musician = item[instrument]
-
-        if musician not in duplicated_musicians:
-          duplicated_musicians[musician] = []
-
-        duplicated_musicians[musician].append(instrument)
-
     
-    for musician in duplicated_musicians:
-      if len(duplicated_musicians[musician]) > 1:
-        instrument_duplicated = duplicated_musicians[musician][0]
-        old_index = indexes[instrument_duplicated]
-
-        while old_index == indexes[instrument_duplicated]:
-          indexes[instrument_duplicated] = get_next_index(musicians[instrument_duplicated], indexes[instrument_duplicated])
-          item[instrument_duplicated] = musicians[instrument_duplicated][indexes[instrument_duplicated]]
+    #Jonatas Rules
+    while item['Líder'] == 'Jonatas' and item['Baixista'] == 'Jonatas':
+      indexes['Líder'] = get_next_index(musicians['Líder'], indexes['Líder'])
+      item['Líder'] = musicians['Líder'][indexes['Líder']]
     
     #Zeik Rules
     if item['Líder'] == 'Zeik':
       item['Violonista'] = 'Zeik'
     
+    while item['Líder'] == 'Zeik' and item['Vocal Homem'] == 'Zeik':
+      indexes['Vocal Homem'] = get_next_index(musicians['Vocal Homem'], indexes['Vocal Homem'])
+      item['Vocal Homem'] = musicians['Vocal Homem'][indexes['Vocal Homem']]
+    
     #Flávio Rules
     if item['Líder'] == 'Flávio':
       item['Tecladista'] = 'Flávio'
     
-    #Jonatas Rules
-    while item['Líder'] == 'Jonatas' and item['Baixista'] == 'Jonatas':
-      indexes['Baixista'] = get_next_index(musicians['Baixista'], indexes['Baixista'])
-      item['Baixista'] = musicians['Baixista'][indexes['Baixista']]
-
+    #Fabio Rules
+    if item['Tecladista'] == 'Fábio':
+      item['Vocal Contralto'] = 'Belle'
+    
+    while item['Tecladista'] != 'Fábio' and item['Vocal Contralto'] == 'Belle':
+      indexes['Vocal Contralto'] = get_next_index(musicians['Vocal Contralto'], indexes['Vocal Contralto'])
+      item['Vocal Contralto'] = musicians['Vocal Contralto'][indexes['Vocal Contralto']]
+    
+    while item['Tecladista'] != 'Fábio' and item['Violonista'] == 'Belle':
+      indexes['Violonista'] = get_next_index(musicians['Violonista'], indexes['Violonista'])
+      item['Violonista'] = musicians['Violonista'][indexes['Violonista']]
+    
+    while item['Líder'] == 'Vinícius' and item['Vocal Homem'] == 'Vinícius':
+      indexes['Vocal Homem'] = get_next_index(musicians['Vocal Homem'], indexes['Vocal Homem'])
+      item['Vocal Homem'] = musicians['Vocal Homem'][indexes['Vocal Homem']]
+    
   return item
 
 
@@ -160,8 +155,6 @@ def get_gigs():
       item = get_youth_musicians(item['Data'])
 
     df = df.append(item, ignore_index=True)
-
-    shuffle_musicians()
 
     for musician_type in musicians:
       indexes[musician_type] = get_next_index(musicians[musician_type], indexes[musician_type])
