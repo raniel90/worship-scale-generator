@@ -166,4 +166,4 @@ def get_gigs():
 
 df = get_gigs()
 today = datetime.date.today()
-df.to_csv(f"Escala de músicos {today.year}.csv", index=False)
+df.to_excel(f"Escala de músicos {today.year}.xls", index=False)
