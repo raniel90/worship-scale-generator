@@ -5,7 +5,7 @@ import pandas as pd
 musicians = {
   'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary', 'Gustavo'],
   'Baixista': ['Douglas', 'Nona', 'Edson', 'Jonatas'], 
-  'Guitarrista': ['Fernando', 'Eraldo', 'Afonso'],
+  'Guitarrista': ['Fernando', 'Guga', 'Afonso'],
   'Violonista': ['Joel', 'Zeik', 'Belle', 'Fagner'],
   'Tecladista': ['Flávio', 'Giba', 'Fábio'],
   'Percussionista': ['Natal'],
@@ -165,4 +165,5 @@ def get_gigs():
     
 
 df = get_gigs()
-df.to_csv("Escala de músicos.csv")
+today = datetime.date.today()
+df.to_csv(f"Escala de músicos {today.year}.csv", index=False)
