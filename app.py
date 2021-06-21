@@ -3,13 +3,13 @@ import datetime
 import pandas as pd
 
 musicians = {
-  'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Ary', 'Gustavo'],
+  'Baterista': ['Roosevelt', 'Deco', 'Raniel', 'Gustavo'],
   'Baixista': ['Douglas', 'Nona', 'Edson', 'Jonatas'], 
   'Guitarrista': ['Fernando', 'Guga', 'Afonso'],
   'Violonista': ['Joel', 'Zeik', 'Belle', 'Fagner'],
   'Tecladista': ['Flávio', 'Giba', 'Fábio'],
   'Percussionista': ['Natal'],
-  'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Geninha', 'Sandra'],
+  'Vocal Soprano': ['Kátia', 'Flavinha', 'Julinha', 'Paty', 'Sandra', 'Helen', 'Beta', 'Helena'],
   'Vocal Contralto': ['Betânia', 'Helen', 'Cinthia', 'Belle', 'Dani'],
   'Líder': ['Flávio', 'Jonatas', 'Vinícius', 'Zeik'],
   'Vocal Homem': ['Vinícius', 'Kaio', 'Zeik']
